@@ -1,10 +1,10 @@
 #coding:utf-8
 
 """
-ƒEƒCƒ“ƒhƒE‚ğˆ—‚·‚éƒRƒ}ƒ“ƒhŒQ
+ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’å‡¦ç†ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰ç¾¤
 
-’è‹`—áF
-    # config.py ‚ÉŸ‚Ì‚æ‚¤‚É‹LÚ‚µ‚Ü‚·
+å®šç¾©ä¾‹ï¼š
+    # config.py ã«æ¬¡ã®ã‚ˆã†ã«è¨˜è¼‰ã—ã¾ã™
 
     import window_command
     #reload(window_command)
@@ -18,22 +18,22 @@
         ( u"restore",    window_command.command_RestoreWindow ),
     ]
 
-g—p—áF
-    E"foreground;notepad" + Enter
-      ƒƒ‚’ (notepad.exe)‚ğ‘S‚ÄÅ‘O–Ê‚É•\¦‚·‚éB
+ä½¿ç”¨ä¾‹ï¼š
+    ãƒ»"foreground;notepad" + Enter
+      ãƒ¡ãƒ¢å¸³(notepad.exe)ã‚’å…¨ã¦æœ€å‰é¢ã«è¡¨ç¤ºã™ã‚‹ã€‚
 
-    E"foreground:memochou" + Enter
-      ƒƒ‚’ ‚ğƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚Å memochou ‚Æ‚µ‚Ä“o˜^‚µ‚Ä‚¢‚ê‚ÎA
-      ‚±‚Ì‚æ‚¤‚Éw’è‚·‚é‚±‚Æ‚à‰Â”\B
+    ãƒ»"foreground:memochou" + Enter
+      ãƒ¡ãƒ¢å¸³ã‚’ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã§ memochou ã¨ã—ã¦ç™»éŒ²ã—ã¦ã„ã‚Œã°ã€
+      ã“ã®ã‚ˆã†ã«æŒ‡å®šã™ã‚‹ã“ã¨ã‚‚å¯èƒ½ã€‚
 
-    E"close;notepad" + Enter
-      ƒƒ‚’ ‚ğ‘S‚Ä•Â‚¶‚éi•ÒW’†‚Ìê‡‚Í•Â‚¶‚é‚©‚Ç‚¤‚©Šm”F‚³‚ê‚éjB
+    ãƒ»"close;notepad" + Enter
+      ãƒ¡ãƒ¢å¸³ã‚’å…¨ã¦é–‰ã˜ã‚‹ï¼ˆç·¨é›†ä¸­ã®å ´åˆã¯é–‰ã˜ã‚‹ã‹ã©ã†ã‹ç¢ºèªã•ã‚Œã‚‹ï¼‰ã€‚
 
-    E"notepad" + Ctrl + [-]
-      “¯ãB
+    ãƒ»"notepad" + Ctrl + [-]
+      åŒä¸Šã€‚
 
-    ¦foreground, close ‚È‚Ç‚Å‘€ì‚·‚éƒEƒCƒ“ƒhƒE‚ÍAƒvƒƒZƒX–¼A‚Ü‚½‚ÍAƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚Å
-      “o˜^‚µ‚½ƒRƒ}ƒ“ƒh–¼‚Åw’è‚µ‚Ü‚·B
+    â€»foreground, close ãªã©ã§æ“ä½œã™ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¯ã€ãƒ—ãƒ­ã‚»ã‚¹åã€ã¾ãŸã¯ã€ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã§
+      ç™»éŒ²ã—ãŸã‚³ãƒãƒ³ãƒ‰åã§æŒ‡å®šã—ã¾ã™ã€‚
 """
 
 import os
@@ -66,17 +66,17 @@ def command_WindowGenerator(f):
             return True
 
         if len(args) == 0:
-            print "‘ÎÛ‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ."
+            print "å¯¾è±¡ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“."
             return
 
         command_name = args[0].lower()
         for command in loadCommandListFromIniFile():
-            # ini ‚ÌƒRƒ}ƒ“ƒh–¼‚©‚ç exe ‚ğ’T‚·
+            # ini ã®ã‚³ãƒãƒ³ãƒ‰åã‹ã‚‰ exe ã‚’æ¢ã™
             if command_name == command[0].lower():
                 pyauto.Window.enum( callback, os.path.basename(command[1]).lower() )
                 break
         else:
-            # ƒvƒƒZƒX–¼‚Æ‚µ‚Ä‰ğß‚·‚é
+            # ãƒ—ãƒ­ã‚»ã‚¹åã¨ã—ã¦è§£é‡ˆã™ã‚‹
             if command_name[-4:].lower() != ".exe":
                 command_name += ".exe"
             pyauto.Window.enum( callback, command_name )
@@ -94,21 +94,21 @@ def foregroundHandler(wnd):
 WM_CLOSE = 16
 
 # --------------------------------------------------------------------
-# ƒEƒCƒ“ƒhƒE‚ğÅ‘O–Ê‚É‚·‚éƒRƒ}ƒ“ƒh
+# ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’æœ€å‰é¢ã«ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
 command_ForegroundWindow = command_WindowGenerator( foregroundHandler )
 
 # --------------------------------------------------------------------
-# ƒEƒCƒ“ƒhƒE‚ğ•Â‚¶‚éƒRƒ}ƒ“ƒh
+# ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ã‚³ãƒãƒ³ãƒ‰
 command_CloseWindow = command_WindowGenerator( lambda wnd: wnd.sendMessage( WM_CLOSE, 0, 0 ) )
 
 # --------------------------------------------------------------------
-# ƒEƒCƒ“ƒhƒE‚ğÅ¬‰»‚·‚éƒRƒ}ƒ“ƒh
+# ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’æœ€å°åŒ–ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
 command_MinimizeWindow = command_WindowGenerator( lambda wnd: wnd.minimize() )
 
 # --------------------------------------------------------------------
-# ƒEƒCƒ“ƒhƒE‚ğÅ‘å‰»‚·‚éƒRƒ}ƒ“ƒh
+# ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’æœ€å¤§åŒ–ã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
 command_MaximizeWindow = command_WindowGenerator( lambda wnd: wnd.maximize() )
 
 # --------------------------------------------------------------------
-# ƒEƒCƒ“ƒhƒE‚ğŒ³‚É–ß‚·ƒRƒ}ƒ“ƒh
+# ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’å…ƒã«æˆ»ã™ã‚³ãƒãƒ³ãƒ‰
 command_RestoreWindow = command_WindowGenerator( lambda wnd: wnd.restore() )
