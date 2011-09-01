@@ -5,10 +5,10 @@
 
 コマンド：
   ・command_OpenExploer
-    第一引数のコマンドのフォルダをエクスプローラーで開きます。
+    第一引数のフォルダをエクスプローラーで開きます。
 
   ・command_OpenCommandPrompt
-    第一引数のコマンドのフォルダをコマンド プロンプトで開きます。
+    第一引数のフォルダをコマンド プロンプトで開きます。
 
   ・command_EditCommand
     第一引数のコマンドを編集します。
@@ -27,7 +27,27 @@
 使用例：
     ・"memochou" + Shift - Enter
       メモ帳をドラッグ＆ドロップで memochou として登録していれば、
-      エクスプローラーでメモ帳がインストールされたフォルダを開く。
+      メモ帳がインストールされたフォルダをエクスプローラーで開く。
+
+    ・"memochou" + Ctrl - Enter
+      メモ帳をドラッグ＆ドロップで memochou として登録していれば、
+      メモ帳がインストールされたフォルダをコマンド プロンプトで開く。
+
+    ・"memochou" + Alt - Enter
+      メモ帳をドラッグ＆ドロップで memochou として登録していれば、
+      memochou コマンドを編集する。
+
+    ・"~" + Ctrl - Enter
+      マイドキュメントをドラッグ＆ドロップで ~ として登録していれば、
+      コマンド プロンプトでマイドキュメント フォルダを開く。
+
+    ・"~" + Alt - Enter
+      マイドキュメントをドラッグ＆ドロップで ~ として登録していれば、
+      ~ コマンドを編集する。
+
+    ・"C:\Users" + Ctrl - Enter
+      C:\Users をコマンド プロンプトを開く。
+
 """
 
 import os
@@ -36,16 +56,25 @@ from clnch import *
 # --------------------------------------------------------------------
 # コマンドのフォルダーをエクスプローラーで表示する
 def command_OpenExplorer(args):
-    path = getCommandDir(args[0])
+    path = getCommandPath(args[0])
     if path:
-        shellExecute( None, None, path, u"", u"" )
+        if os.path.isfile(path):
+            print r'/select,"%s"' % path
+            shellExecute( None, None, u"explorer.exe", u'/select,"%s"' % path, u"" )
+        elif os.path.isdir(path):
+            shellExecute( None, None, path, u"", u"" )
+        else:
+            shellExecute( None, None, os.path.split(path)[0], u"", u"" )
 
 # --------------------------------------------------------------------
 # コマンドのフォルダーをコマンド プロンプトで表示する
 def command_OpenCommandPrompt(args):
-    path = getCommandDir(args[0])
+    path = getCommandPath(args[0])
     if path:
-        shellExecute( None, None, u"cmd.exe", u"", path )
+        if os.path.isdir(path):
+            shellExecute( None, None, "cmd.exe", u"", path )
+        else:
+            shellExecute( None, None, u"cmd.exe", u"", os.path.split(path)[0] )
 
 # --------------------------------------------------------------------
 # コマンドを編集する
@@ -78,14 +107,10 @@ def command_EditCommand(window):
 
 
 # 処理対象のフォルダを取得する
-def getCommandDir( text ):
+def getCommandPath( text ):
 
-    # ファイルパスならフォルダを返す
-    if os.path.isfile(text):
-        path, tmp = os.path.split(text)
-        return path
-    # ディレクトリならそのまま返す
-    elif os.path.isdir(text):
+    # ファイルやディレクトリ パスならそのまま返す
+    if os.path.isfile(text) or os.path.isdir(text):
         return text
 
     # ini から取得
@@ -93,10 +118,7 @@ def getCommandDir( text ):
     command_list = loadCommandListFromIniFile()
     for command in command_list:
         if text.lower() == command[0].lower():
-            path = command[1]
-            if not os.path.isdir(path):
-                path, tmp = os.path.split(path)
-            return path
+            return command[1]
 
 # ini に保存されたコマンドを読み込む
 def loadCommandListFromIniFile():
