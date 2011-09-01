@@ -30,9 +30,17 @@ from clnch import *
 
 class IniCommandList:
     def __init__( self ):
+        self.mtime = 0
         self.updateCommandList()
 
     def updateCommandList(self):
+
+        # check modified
+        mtime = os.path.getmtime( clnch_ini.ini_filename )
+        if self.mtime >= mtime:
+            return
+        self.mtime = mtime
+
         self.command_list = []
         i=0
         while True:
@@ -49,12 +57,15 @@ class IniCommandList:
         for item in self.command_list:
             item_lower = item[0].lower()
             if arg.lower().startswith(item_lower + u"\\") or arg.lower().startswith(item_lower + u"/"):
-                return item[1] +  arg[ len(item_lower): ]
+                path = item[1]
+                if os.path.isfile(path):
+                    path, tmp = os.path.split(path)
+                return path +  arg[ len(item_lower): ]
         return arg
 
 def fixHistory( main_window, orig_text, text):
     history = main_window.commandline_history
-    if history[0] == text:
+    if history[0] == text and orig_text != text:
         history.pop(0)
         history.insert(0, orig_text)
 
@@ -79,6 +90,8 @@ class commandline_MyLauncher(clnch_commandline.commandline_Launcher):
                                      [sel1 + text_diff, sel2 + text_diff])
 
     def onCandidate( self, update_info ):
+        self.ini_commands.updateCommandList()
+
         left = update_info.text[ : update_info.selectionLeft() ]
         left_lower = left.lower()
         pos_arg = left.rfind(";")+1
@@ -135,18 +148,29 @@ class commandline_MyExecuteFile(clnch_commandline.commandline_ExecuteFile):
         return ret
 
 
-def fixCommand(cmd, window, ini_commands):
+def fixCommand(func, window, ini_commands):
     def _newCommand(args):
         orig_text = ";".join(args)
         args = map( ini_commands.convertArg, args )
 
         # 元々の処理に委譲
-        ret = cmd(args)
+        text = ";".join(args)
+        ret = func(args)
 
         # history を調整
         if ret:
             fixHistory(window, orig_text, text)
-    return _newCommand
+
+    argspec = inspect.getargspec(func)
+    if inspect.ismethod(func):
+        num_args = len(argspec[0])-1
+    else:
+        num_args = len(argspec[0])
+
+    if num_args == 1:
+        return _newCommand
+    else:
+        return func
 
 # --------------------------------------------------------------------
 # "ChangeDirectory" コマンド
