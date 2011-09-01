@@ -4,7 +4,7 @@
 フォルダを開くコマンド群
 
 コマンド：
-  ・command_OpenExploer
+  ・command_OpenExplorer
     第一引数のフォルダをエクスプローラーで開きます。
 
   ・command_OpenCommandPrompt
