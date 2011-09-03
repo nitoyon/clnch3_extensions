@@ -1,7 +1,7 @@
 #coding:utf-8
 
 """
-Python インタラクティブ シェルを可能にする
+CraftLaunch で Python インタラクティブ シェルを使う拡張
 
 定義例：
     # config.py に次のように記載します
@@ -11,6 +11,8 @@ Python インタラクティブ シェルを可能にする
     python_console.register()
 
 実行例：
+    ※ ">>> " も含めて CraftLaunch に入力してください
+
     >>> a = [1,3,5]
 
     >>> a
@@ -21,6 +23,7 @@ Python インタラクティブ シェルを可能にする
     1
     3
     5
+
 """
 
 import os
@@ -67,7 +70,7 @@ class commandline_PythonConsole:
             # startswith で True を返さないように影響のない文字に変更
             text = "_______"
 
-        # console 入力中にスペースを入力するためのハック
+        # console 入力中にスペースを入力可能にするためのハック
         vk_complete = self.main_window.commandline_edit.vk_complete
         contains_space = VK_SPACE in vk_complete
         if text.startswith(self.ps1) or self.ps1.startswith(text) or \
