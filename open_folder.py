@@ -59,7 +59,6 @@ def command_OpenExplorer(args):
     path = getCommandPath(args[0])
     if path:
         if os.path.isfile(path):
-            print r'/select,"%s"' % path
             shellExecute( None, None, u"explorer.exe", u'/select,"%s"' % path, u"" )
         elif os.path.isdir(path):
             shellExecute( None, None, path, u"", u"" )
