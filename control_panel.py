@@ -4,7 +4,7 @@
 コントロール パネルを開くためのコマンド群
 
 定義例：
-    # config.py に次のように記載します
+    # config.py の configure() 関数に次のように記載します
 
     import control_panel
     #reload(control_panel)

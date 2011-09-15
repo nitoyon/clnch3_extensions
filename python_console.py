@@ -20,11 +20,11 @@ CraftLaunch で Python インタラクティブ シェルを使う拡張
     5
 
 定義例：
-    # config.py に次のように記載します
+    # config.py の configure() 関数に次のように記載します
 
     import python_console
     #reload(python_console)
-    python_console.register()
+    python_console.register(window)
 
 """
 

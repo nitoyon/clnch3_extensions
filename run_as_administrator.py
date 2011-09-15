@@ -9,7 +9,7 @@ Ctrl-Shift-Enter で管理者として実行する
 (Windows Vista 以降で UAC が有効の場合)
 
 定義例：
-    # config.py の末尾に次のように記載します
+    # config.py の configure() 関数に次のように記載します
 
     import run_as_administrator
     #reload(run_as_administrator)

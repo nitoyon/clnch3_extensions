@@ -11,7 +11,7 @@
       → http://twitter.com/nitoyon を規定のブラウザで開く
 
 定義例：
-    # config.py に次のように記載します
+    # config.py の configure() 関数に次のように記載します
 
     import url_alias
     #reload(url_alias)

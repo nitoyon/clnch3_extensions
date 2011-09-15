@@ -4,12 +4,12 @@
 相対パス・フォルダエイリアス対応化
 
 定義例：
-    # config.py の末尾に次のように記載します
+    # config.py の configure() 関数の末尾に次のように記載します
 
-    import my_launcher
-    #reload(my_launcher)
-    window.launcher.command_list += [( u"cd", my_launcher.command_ChangeDirectory )]
-    my_launcher.register(window)
+    import path_plus
+    #reload(path_plus)
+    window.launcher.command_list += [( u"cd", path_plus.command_ChangeDirectory )]
+    path_plus.register(window)
 
 
 使用例：
@@ -19,9 +19,11 @@
 
     ・".\"
       カレントフォルダー配下のファイル・フォルダーへアクセスできます。
+      ※ 標準でもサポートされていますが、深い階層のファイルを開くと
+         エラーになる問題を修正しています
 
     ・"cd;..\"
-      カレントフォルダーを１つ上の階層に移動する。
+      カレントフォルダーを１つ上の階層に移動します。
 """
 
 import os
