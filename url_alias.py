@@ -16,9 +16,9 @@
     import url_alias
     #reload(url_alias)
     url_alias.register(window, 
-                       { 'regex': re.compile('rfc(\d+)', re.IGNORECASE), 
+                       { 'regex': re.compile('^rfc(\d+)$', re.IGNORECASE), 
                          'url': 'http://www.ietf.org/rfc/rfc%param%.txt' },
-                       { 'regex': re.compile('@(\w+)'), 
+                       { 'regex': re.compile('^@(\w+)$'), 
                          'url': 'http://twitter.com/%param%' },
                       )
 
@@ -57,7 +57,7 @@ class commandline_UrlAlias:
     def onEnter( self, commandline, text, mod ):
 
         for pattern in self.patterns:
-            m = pattern['regex'].match(text)
+            m = pattern['regex'].search(text)
             if m:
                 break
         else:
