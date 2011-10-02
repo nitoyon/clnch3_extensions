@@ -66,7 +66,7 @@ def command_WindowGenerator(f):
             return True
 
         if len(args) == 0:
-            print "対象が指定されていません."
+            print u"対象が指定されていません."
             return
 
         command_name = args[0].lower()
