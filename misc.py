@@ -4,8 +4,8 @@
 雑多なコマンドを定義します
 
 コマンド：
-  ・command_OpenExploer
-    第一引数のフォルダをエクスプローラーで開きます。
+  ・command_ClearConsole
+    コンソールを消去します。
 
 関数：
   ・addAlias
