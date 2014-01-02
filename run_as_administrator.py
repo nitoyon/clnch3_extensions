@@ -12,7 +12,6 @@ Ctrl-Shift-Enter で管理者として実行する
     # config.py の configure() 関数に次のように記載します
 
     import run_as_administrator
-    #reload(run_as_administrator)
     run_as_administrator.register(window)
 
 """

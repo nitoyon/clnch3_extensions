@@ -23,7 +23,6 @@ CraftLaunch で Python インタラクティブ シェルを使う拡張
     # config.py の configure() 関数に次のように記載します
 
     import python_console
-    #reload(python_console)
     python_console.register(window)
 
 """

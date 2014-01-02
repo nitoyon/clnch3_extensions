@@ -7,7 +7,6 @@
     # config.py の configure() 関数の末尾に次のように記載します
 
     import path_plus
-    #reload(path_plus)
     window.launcher.command_list += [( u"cd", path_plus.command_ChangeDirectory )]
     path_plus.register(window)
 

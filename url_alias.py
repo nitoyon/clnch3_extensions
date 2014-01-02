@@ -14,7 +14,6 @@
     # config.py の configure() 関数に次のように記載します
 
     import url_alias
-    #reload(url_alias)
     url_alias.register(window, 
                        { 'regex': re.compile('^rfc(\d+)$', re.IGNORECASE), 
                          'url': 'http://www.ietf.org/rfc/rfc%param%.txt' },

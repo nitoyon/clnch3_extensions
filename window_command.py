@@ -7,7 +7,6 @@
     # config.py の configure() 関数に次のように記載します
 
     import window_command
-    #reload(window_command)
     window.cmd_keymap[ KeyEvent( VK_L, MODKEY_CTRL ) ] = window_command.command_ForegroundWindow
     window.cmd_keymap[ KeyEvent( VK_OEM_MINUS, MODKEY_CTRL ) ] = window_command.command_CloseWindow
     window.launcher.command_list += [

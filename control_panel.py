@@ -7,7 +7,6 @@
     # config.py の configure() 関数に次のように記載します
 
     import control_panel
-    #reload(control_panel)
     control_panel.register(window)
 
 利用例：

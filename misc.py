@@ -15,7 +15,6 @@
     # config.py に次のように記載します
 
     import misc
-    #reload(misc)
 
     # cls コマンドを登録する
     window.launcher.command_list += [ ( u"cls", misc.command_ClearConsole ) ]
