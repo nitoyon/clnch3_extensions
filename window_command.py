@@ -7,8 +7,8 @@
     # config.py の configure() 関数に次のように記載します
 
     import window_command
-    window.cmd_keymap[ KeyEvent( VK_L, MODKEY_CTRL ) ] = window_command.command_ForegroundWindow
-    window.cmd_keymap[ KeyEvent( VK_OEM_MINUS, MODKEY_CTRL ) ] = window_command.command_CloseWindow
+    window.cmd_keymap[ "C-L" ] = window_command.command_ForegroundWindow
+    window.cmd_keymap[ "C-Minus" ] = window_command.command_CloseWindow
     window.launcher.command_list += [
         ( u"foreground", window_command.command_ForegroundWindow ),
         ( u"close",      window_command.command_CloseWindow ),
@@ -42,7 +42,7 @@ def loadCommandListFromIniFile():
     i=0
     while True:
         try:
-            command_string = unicode( clnch_ini.get( "COMMANDLIST", "command_%d"%(i,) ), "utf8" )
+            command_string = clnch_ini.get( "COMMANDLIST", "command_%d"%(i,) )
         except:
             break
 
@@ -65,7 +65,7 @@ def command_WindowGenerator(f):
             return True
 
         if len(args) == 0:
-            print u"対象が指定されていません."
+            print( u"対象が指定されていません." )
             return
 
         command_name = args[0].lower()
@@ -81,7 +81,7 @@ def command_WindowGenerator(f):
             pyauto.Window.enum( callback, command_name )
 
         if count[0] == 0:
-            print "No window found: %s" % args[0]
+            print( "No window found: %s" % args[0] )
 
     return commandHandler
 
