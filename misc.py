@@ -15,7 +15,6 @@
     # config.py に次のように記載します
 
     import misc
-    #reload(misc)
 
     # cls コマンドを登録する
     window.launcher.command_list += [ ( u"cls", misc.command_ClearConsole ) ]
@@ -34,7 +33,7 @@ from clnch import *
 def command_ClearConsole(window):
     def _command_ClearConsole(args):
         window.console_window.clearLog()
-        print "Done"
+        print("Done")
 
     return _command_ClearConsole
 
@@ -51,7 +50,7 @@ def command_ClearConsole(window):
 # - newName:
 #      新しい名前
 def addAlias(window, originalName, newName):
-    cmd = filter(lambda x: x[0] == originalName, window.launcher.command_list)
+    cmd = list(filter(lambda x: x[0] == originalName, window.launcher.command_list))
     if len(cmd) == 0:
         raise Exception("Command not found: %s" % originalName)
 
