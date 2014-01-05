@@ -13,7 +13,7 @@ CraftLaunch で Python インタラクティブ シェルを使う拡張
     >>> a
     [1, 3, 5]
     >>> for i in a:
-    ...     print i
+    ...     print(i)
     ... 
     1
     3
@@ -99,7 +99,7 @@ class commandline_PythonConsole(code.InteractiveConsole):
             return False
 
         # 実行
-        print text
+        print(text)
         self.more = self.push(text[len(ps):])
 
         # 履歴に追加
