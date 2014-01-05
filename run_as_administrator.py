@@ -16,21 +16,21 @@ Ctrl-Shift-Enter で管理者として実行する
 
 """
 
-from clnch import *
+from ckit.ckit_const import *
 import pyauto
-import ctypes
+import types
 
 # --------------------------------------------------------------------
 # コマンドラインを登録する
 def register(window):
 
-    # オリジナルの ShellExecuteW をバックアップする
-    if not 'ShellExecuteW__' in ctypes.windll.shell32.__dict__:
-        ctypes.windll.shell32.ShellExecuteW__ = ctypes.windll.shell32.ShellExecuteW
+    # オリジナルの shellExecute をバックアップする
+    if isinstance(pyauto.shellExecute, types.BuiltinFunctionType):
+        pyauto.shellExecute__ = pyauto.shellExecute
 
     # ラップ用 ShellExecute
     # 各種コマンドや各種コマンドラインで ckit.shellExecute 
-    def _ShellExecuteW( hwnd, verb, filename, param, directory, swmode ):
+    def _shellExecute( verb,file,param=None,directory=None,swmode=None ):
         # キー状態を確認
         is_ctrl_down  = pyauto.Input.getAsyncKeyState(VK_CONTROL) & 0x8000
         is_shift_down = pyauto.Input.getAsyncKeyState(VK_SHIFT) & 0x8000
@@ -45,9 +45,9 @@ def register(window):
            not is_alt_down and \
            not is_win_down and \
            verb is None:
-            verb = unicode('runas', 'mbcs')
+            verb = 'runas'
 
         # オリジナルの ShellExecute を実行
-        return ctypes.windll.shell32.ShellExecuteW__( hwnd, verb, filename, param, directory, swmode)
+        return pyauto.shellExecute__( verb, file, param, directory, swmode )
 
-    ctypes.windll.shell32.ShellExecuteW = _ShellExecuteW
+    pyauto.shellExecute = _shellExecute
