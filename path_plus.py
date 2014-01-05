@@ -46,7 +46,7 @@ class IniCommandList:
         i=0
         while True:
             try:
-                command_string = unicode( clnch_ini.get( "COMMANDLIST", "command_%d"%(i,) ), "utf8" )
+                command_string = clnch_ini.get( "COMMANDLIST", "command_%d"%(i,) )
             except:
                 break
         
@@ -55,6 +55,12 @@ class IniCommandList:
             i += 1
 
     def convertArg( self, arg ):
+        # パスの変換を行います
+        #
+        # ~ が C:\Users\foo のとき、~\memo.txt を C:\Users\foo\memo.txt に
+        # 変換します。
+        # notepad が C:\windows\system32\notepad.exe のとき、notepad\calc.exe
+        # を C:\windows\system32\calc.exe に変換します。
         for item in self.command_list:
             item_lower = item[0].lower()
             if arg.lower().startswith(item_lower + u"\\") or arg.lower().startswith(item_lower + u"/"):
@@ -73,6 +79,9 @@ def fixHistory( main_window, orig_text, text):
 # --------------------------------------------------------------------
 # "MyLauncher" コマンドライン
 #   commandline_Launcher をカスタマイズします。
+#
+# * フォルダエイリアスを利用したオートコンプリートを有効にします。
+# * コマンドへの引数でもフォルダエイリアスを利用できるようにします。
 class commandline_MyLauncher(clnch_commandline.commandline_Launcher):
     def __init__( self, window, ini_commands ):
         clnch_commandline.commandline_Launcher.__init__( self, window )
@@ -106,7 +115,7 @@ class commandline_MyLauncher(clnch_commandline.commandline_Launcher):
 
     def onEnter( self, commandline, text, mod ):
         orig_text = text
-        args = map( self.ini_commands.convertArg, text.split(';') )
+        args = list( map( self.ini_commands.convertArg, text.split(';') ) )
 
         # 元々の処理に委譲
         text = ";".join(args)
@@ -118,8 +127,10 @@ class commandline_MyLauncher(clnch_commandline.commandline_Launcher):
         return ret
 
 # --------------------------------------------------------------------
-# "MyLauncher" コマンドライン
-#   commandline_Launcher をカスタマイズします。
+# "MyExecuteFile" コマンドライン
+#   commandline_ExecuteFile をカスタマイズして、既存のコマンドをフォルダの
+#   エイリアスとして利用できるようにします。
+#   (例) ~ が C:\Users\foo のとき、~\memo.txt で C:\Users\foo\memo.txt を実行
 class commandline_MyExecuteFile(clnch_commandline.commandline_ExecuteFile):
     def __init__( self, window, ini_commands ):
         clnch_commandline.commandline_ExecuteFile.__init__( self, window )
@@ -127,7 +138,7 @@ class commandline_MyExecuteFile(clnch_commandline.commandline_ExecuteFile):
 
     def onEnter( self, commandline, text, mod ):
         orig_text = text
-        args = map( self.ini_commands.convertArg, text.split(';') )
+        args = list( map( self.ini_commands.convertArg, text.split(';') ) )
 
         # ファイルを確認
         file = args[0]
@@ -149,10 +160,13 @@ class commandline_MyExecuteFile(clnch_commandline.commandline_ExecuteFile):
         return ret
 
 
+# cmd_keymap で実行するコマンドでフォルダエイリアスを利用できるようにします
+#
+# (例) ~\foo で open_folder.command_OpenCommandPrompt を使う
 def fixCommand(func, window, ini_commands):
     def _newCommand(args):
         orig_text = ";".join(args)
-        args = map( ini_commands.convertArg, args )
+        args = list( map( ini_commands.convertArg, args ) )
 
         # 元々の処理に委譲
         text = ";".join(args)
@@ -162,12 +176,15 @@ def fixCommand(func, window, ini_commands):
         if ret:
             fixHistory(window, orig_text, text)
 
+    # 引数を受け取らない関数やメソッドを許容するためのトリック
+    # clnch_commandline.executeCommand() の実装を引用している
     argspec = inspect.getargspec(func)
     if inspect.ismethod(func):
         num_args = len(argspec[0])-1
     else:
         num_args = len(argspec[0])
 
+    # 引数を受け取るコマンドのみをフックする
     if num_args == 1:
         return _newCommand
     else:
@@ -184,7 +201,7 @@ def command_ChangeDirectory(args):
         dir = args[0]
         os.chdir(dir)
     else:
-        print os.getcwd()
+        print(os.getcwd())
 
 # --------------------------------------------------------------------
 # コマンドラインを登録する
@@ -195,11 +212,12 @@ def register(window):
     my_launcher = commandline_MyLauncher(window, ini_commands)
     my_file = commandline_MyExecuteFile(window, ini_commands)
     window.launcher = my_launcher
-    window.commandline_list = map(lambda commandline:
+    window.commandline_list.insert(0, my_file)
+    window.commandline_list = list(map(lambda commandline:
         my_launcher if isinstance(commandline, clnch_commandline.commandline_Launcher) else 
         my_file     if isinstance(commandline, clnch_commandline.commandline_ExecuteFile) else commandline,
-        window.commandline_list)
+        window.commandline_list))
 
     # cmd_keymap の command 置き換え
-    for k,cmd in window.cmd_keymap.items():
-        window.cmd_keymap[k] = fixCommand(cmd, window, ini_commands)
+    for k,cmd in window.cmd_keymap.table.items():
+        window.cmd_keymap[str(k)] = fixCommand(cmd, window, ini_commands)
