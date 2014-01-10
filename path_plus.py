@@ -194,7 +194,7 @@ def fixCommand(func, window, ini_commands):
 # "ChangeDirectory" コマンド
 #   カレントフォルダを変更します。
 #    cd;c:\users :   カレントフォルダを c:\users に変更します。
-#    cd;L        :   カレントフォルダを表示します。
+#    cd;         :   カレントフォルダを表示します。
 def command_ChangeDirectory(args):
     
     if len(args)>=1:
