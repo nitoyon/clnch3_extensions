@@ -10,6 +10,9 @@ r"""
   ・command_OpenCommandPrompt
     第一引数のフォルダをコマンド プロンプトで開きます。
 
+  ・command_OpenPowerShell
+    第一引数のフォルダを PowerShell で開きます。
+
   ・command_EditCommand
     第一引数のコマンドを編集します。
 
@@ -73,6 +76,16 @@ def command_OpenCommandPrompt(args):
             pyauto.shellExecute( None, "cmd.exe", "", path, None )
         else:
             pyauto.shellExecute( None, "cmd.exe", "", os.path.split(path)[0], None )
+
+# --------------------------------------------------------------------
+# コマンドのフォルダーを PowerShell で表示する
+def command_OpenPowerShell(args):
+    path = getCommandPath(args[0])
+    if path:
+        if os.path.isdir(path):
+            pyauto.shellExecute( None, "powershell.exe", "", path, None )
+        else:
+            pyauto.shellExecute( None, "powershell.exe", "", os.path.split(path)[0], None )
 
 # --------------------------------------------------------------------
 # コマンドを編集する
