@@ -8,6 +8,9 @@ Ctrl-Shift-Enter で管理者として実行する
 可能にします。
 (Windows Vista 以降で UAC が有効の場合)
 
+フォルダーを開くときに Ctrl-Shift-Enter を押しているときには
+管理者のコマンド プロンプトでフォルダーを開きます。
+
 定義例：
     # config.py の configure() 関数に次のように記載します
 
@@ -17,8 +20,11 @@ Ctrl-Shift-Enter で管理者として実行する
 """
 
 from ckit.ckit_const import *
+import os
 import pyauto
 import types
+
+shell = "cmd.exe"
 
 # --------------------------------------------------------------------
 # コマンドラインを登録する
@@ -46,6 +52,18 @@ def register(window):
            not is_win_down and \
            verb is None:
             verb = 'runas'
+
+            # ディレクトリを開くときにはコマンド プロンプトで開く
+            if os.path.isdir(file):
+                # 絶対パス化
+                if not os.path.isabs(file):
+                    file = os.path.abspath(file)
+
+                # 管理者のコマンドプロンプトには directory が引き継がれないので
+                # cd コマンドで移動させる
+                # (例) D:\test → cmd.exe /k "D: & cd D:\test"
+                param = '/k "%s & cd %s"' % (os.path.splitdrive(file)[0], file)
+                file = "cmd.exe"
 
         # オリジナルの ShellExecute を実行
         return pyauto.shellExecute__( verb, file, param, directory, swmode )
