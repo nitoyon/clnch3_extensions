@@ -62,9 +62,17 @@ class commandline_UrlAlias:
         else:
             return False
 
-        # エディットの文字列を変更
-        command = self.main_window.command_URL(pattern['url'])
-        clnch_commandline.executeCommand(commandline, command, m.groups(), mod, text, True)
+        # パラメーターを準備
+        info = ckit.CommandInfo()
+        info.args = [m.group(0)]
+        print(info.args)
+
+        command = self.main_window.UrlCommand(pattern['url'])
+        command(info)
+
+        commandline.appendHistory( text )
+        commandline.quit()
+
         return True
 
     def onStatusString( self, text ):
