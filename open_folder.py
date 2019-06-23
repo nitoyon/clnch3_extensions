@@ -57,8 +57,8 @@ from clnch import *
 
 # --------------------------------------------------------------------
 # コマンドのフォルダーをエクスプローラーで表示する
-def command_OpenExplorer(args):
-    path = getCommandPath(args[0])
+def command_OpenExplorer(info):
+    path = getCommandPath(info.args[0])
     if path:
         if os.path.isfile(path):
             pyauto.shellExecute( None, "explorer.exe", '/select,"%s"' % path, "", None )
@@ -69,8 +69,8 @@ def command_OpenExplorer(args):
 
 # --------------------------------------------------------------------
 # コマンドのフォルダーをコマンド プロンプトで表示する
-def command_OpenCommandPrompt(args):
-    path = getCommandPath(args[0])
+def command_OpenCommandPrompt(info):
+    path = getCommandPath(info.args[0])
     if path:
         if os.path.isdir(path):
             pyauto.shellExecute( None, "cmd.exe", "", path, None )
@@ -79,8 +79,8 @@ def command_OpenCommandPrompt(args):
 
 # --------------------------------------------------------------------
 # コマンドのフォルダーを PowerShell で表示する
-def command_OpenPowerShell(args):
-    path = getCommandPath(args[0])
+def command_OpenPowerShell(info):
+    path = getCommandPath(info.args[0])
     if path:
         if os.path.isdir(path):
             pyauto.shellExecute( None, "powershell.exe", "", path, None )
@@ -90,8 +90,8 @@ def command_OpenPowerShell(args):
 # --------------------------------------------------------------------
 # コマンドを編集する
 def command_EditCommand(window):
-    def _command_EditCommand(args):
-        command_name = args[0].lower()
+    def _command_EditCommand(info):
+        command_name = info.args[0].lower()
 
         items = loadCommandListFromIniFile()
         i = 0
